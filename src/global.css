@@ -61,6 +61,7 @@ h6 {
 a {
   color: #444444;
 }
+
 a:hover {
   color: #888888;
 }
@@ -147,4 +148,84 @@ textarea {
 
 .footer a:hover {
   color: #333;
+}
+
+/* Form Style for the add page*/
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.input-required {
+  border: 2px solid #007bff;
+  /* Blue border for required fields */
+  background-color: #e6f7ff;
+  /* Light blue background */
+}
+
+.input-required:focus {
+  border-color: #0056b3;
+  /* Darker blue on focus */
+  background-color: #d0ebff;
+  /* Slightly darker blue background on focus */
+}
+
+/* Styles for optional input fields */
+.input-optional {
+  border: 2px solid #28a745;
+  /* Green border for optional fields */
+  background-color: #e9fbe6;
+  /* Light green background */
+}
+
+.input-optional:focus {
+  border-color: #1e7e34;
+  /* Darker green on focus */
+  background-color: #d4f5d0;
+  /* Slightly darker green background on focus */
+}
+
+button.button-form {
+  padding: 10px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+button.button-form:hover {
+  background-color: #0056b3;
+}
+
+button.button-form:focus {
+  outline: none;
+  box-shadow: 0 0 5px #0078d7;
+}
+
+#custom-bang-list {
+  margin-top: 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 15px;
+}
+
+#custom-bang-list div {
+  padding: 10px;
+  background-color: #f1f1f1;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  text-align: center;
+  font-size: 14px;
 }
