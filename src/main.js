@@ -14,7 +14,7 @@ function noSearchDefaultPageRender() {
           <input 
             type="text" 
             class="url-input"
-            value="custom?q=%s"
+            value="https://xxtrixxsnens.github.io/quicksearch-public/?q=%s"
             readonly 
           />
           <button class="copy-button">
