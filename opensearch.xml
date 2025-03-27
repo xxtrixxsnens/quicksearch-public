@@ -5,4 +5,5 @@
     <Url type="text/html"
         template="https://xxtrixxsnens.github.io/quicksearch-public/?q={searchTerms}" />
     <InputEncoding>UTF-8</InputEncoding>
+    <Tags>@quickseach @qs</Tags>
 </OpenSearchDescription>
