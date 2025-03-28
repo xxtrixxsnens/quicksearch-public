@@ -6,26 +6,26 @@ function noSearchDefaultPageRender() {
     throw new Error("App element not found");
   }
   app.innerHTML = `
-    <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh;">
-      <div class="content-container">
-        <h1>QuickSearch</h1>
-        <p>A derivative of <a href="https://github.com/t3dotgg/unduck">Unduck by Theo Browne</a>. DuckDuckGo's bang redirects are too slow. Add the following URL as a custom search engine to your browser. Enables <a href="https://duckduckgo.com/bang.html" target="_blank">all of DuckDuckGo's bangs.</a></p>
-        <div class="url-container"> 
-          <input 
-            type="text" 
-            class="url-input"
-            value="https://xxtrixxsnens.github.io/quicksearch-public/?q=%s"
-            readonly 
-          />
-          <button class="copy-button">
-            <img src="./public/clipboard.svg" alt="Copy" />
-          </button>
-        </div>
+  <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh;">
+    <div class="content-container">
+      <h1>QuickSearch</h1>
+      <p>A derivative of <a href="https://github.com/t3dotgg/unduck">Unduck by Theo Browne</a>. DuckDuckGo's bang redirects are too slow. Add the following URL as a custom search engine to your browser. Enables <a href="https://duckduckgo.com/bang.html" target="_blank">all of DuckDuckGo's bangs.</a></p>
+      <div class="url-container"> 
+        <input 
+          type="text" 
+          class="url-input"
+          value="https://xxtrixxsnens.github.io/quicksearch-public/?q=%s"
+          readonly 
+        />
+        <button class="copy-button">
+          <img src="./public/clipboard.svg" alt="Copy" />
+        </button>
       </div>
-      <footer class="footer">
-      </footer>
     </div>
-  `;
+    <footer class="footer">
+    </footer>
+  </div>
+`;
 
   const copyButton = app.querySelector(".copy-button");
   if (!copyButton) {
