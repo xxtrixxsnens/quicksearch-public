@@ -151,6 +151,12 @@ textarea {
 }
 
 /* Form Style for the add page*/
+.error-message {
+  background: orangered;
+  color: #fff;
+  padding: 5px;
+  margin: 5px;
+}
 
 form {
   display: flex;
@@ -194,6 +200,11 @@ input {
   /* Slightly darker green background on focus */
 }
 
+.input-error {
+  border: 2px solid red;
+  background-color: #ffe6e6;
+}
+
 button.button-form {
   padding: 10px;
   background-color: #007bff;
@@ -214,18 +225,39 @@ button.button-form:focus {
   box-shadow: 0 0 5px #0078d7;
 }
 
-#custom-bang-list {
-  margin-top: 20px;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 15px;
+/* Custom style for <p> tags */
+.custom-paragraph {
+  font-family: Georgia, serif;
+  font-size: 16px;
+  line-height: 1.6;
+  color: #333;
+  margin: 2% 0;
+  padding: 2%;
+  border-left: 1% solid #0078d7;
+  text-align: left;
 }
 
-#custom-bang-list div {
-  padding: 10px;
-  background-color: #f1f1f1;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  text-align: center;
+h1 {
+  margin-top: 5%;
+}
+
+#toggle {
+  background-color: #0078d7;
+  color: white;
+  font-family: Arial, sans-serif;
   font-size: 14px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#toggle:hover {
+  background-color: #005a9e;
+}
+
+#toggle:focus {
+  outline: none;
+  box-shadow: 0 0 5px #0078d7;
 }

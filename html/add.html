@@ -5,53 +5,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Add Bang</title>
-    <style>
-        /* Custom style for <p> tags */
-        .custom-paragraph {
-            font-family: Georgia, serif;
-            font-size: 16px;
-            line-height: 1.6;
-            color: #333;
-            margin: 2% 0;
-            padding: 2%;
-            border-left: 1% solid #0078d7;
-            text-align: left;
-        }
-
-        h1 {
-            margin-top: 5%;
-        }
-
-        #toggle {
-            background-color: #0078d7;
-            color: white;
-            font-family: Arial, sans-serif;
-            font-size: 14px;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        #toggle:hover {
-            background-color: #005a9e;
-        }
-
-        #toggle:focus {
-            outline: none;
-            box-shadow: 0 0 5px #0078d7;
-        }
-    </style>
-    <style>
-        .error-message {
-            background: orangered;
-            color: #fff;
-            padding: 5px;
-            margin: 5px;
-        }
-    </style>
-    <link rel="stylesheet" href="./src/global.css" />
+    <link rel="stylesheet" href="../src/global.css" />
 </head>
 
 <body style="background-color: transparent">
@@ -103,17 +57,21 @@
             document.querySelectorAll('.error-message').forEach(el => {
                 el.innerHTML = '';
                 el.setAttribute('hidden', 'true');
+                el.classList.remove('input-error');
             });
 
             let isValid = true;
+            let firstInvalidField = null;
 
             // Validate Bang Tag
             const bang = document.getElementById('bang');
             const bangError = document.getElementById('bang-error');
             if (!bang.value.trim()) {
                 bangError.innerText = 'Bang Tag is required.';
+                bang.classList.add('input-error');
                 bangError.removeAttribute('hidden')
                 isValid = false;
+                if (!firstInvalidField) firstInvalidField = bang;
             }
 
             // Validate Bang Domain
@@ -121,8 +79,10 @@
             const bangDomainError = document.getElementById('bang-domain-error');
             if (!bangDomain.value.trim()) {
                 bangDomainError.innerText = 'Bang Domain is required.';
+                bangDomain.classList.add('input-error');
                 bangDomainError.removeAttribute('hidden')
                 isValid = false;
+                if (!firstInvalidField) firstInvalidField = bangDomain;
             }
 
             // Validate Bang URL
@@ -130,12 +90,21 @@
             const bangUrlError = document.getElementById('bang-url-error');
             if (!bangUrl.value.trim()) {
                 bangUrlError.innerText = 'A valid URL is required.';
-                bangUrlError.removeAttribute('hidden')
+                bangUrl.classList.add('input-error');
+                bangUrlError.removeAttribute('hidden');
                 isValid = false;
+                if (!firstInvalidField) firstInvalidField = bangUrl;
             } else if (!isValidURL(bangUrl.value.trim())) {
                 bangUrlError.innerText = 'Please enter a valid URL.';
-                bangUrlError.removeAttribute('hidden')
+                bangUrl.classList.add('input-error');
+                bangUrlError.removeAttribute('hidden');
                 isValid = false;
+                if (!firstInvalidField) firstInvalidField = bangUrl;
+            }
+
+            // Focus the first invalid field
+            if (firstInvalidField) {
+                firstInvalidField.focus();
             }
 
             // If the form is valid, submit it
