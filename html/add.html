@@ -53,54 +53,35 @@
         function validateForm(event) {
             event.preventDefault(); // Prevent form submission
 
+            // Get the form element
+            const form = document.getElementById('custom-bang-form');
+
             // Clear previous custom error messages
             document.querySelectorAll('.error-message').forEach(el => {
                 el.innerHTML = '';
                 el.setAttribute('hidden', 'true');
-                el.classList.remove('input-error');
             });
+            const fields = form.querySelectorAll('input');
+            fields.forEach(field => {
+                field.classList.remove('input-error');
+            })
 
             let isValid = true;
             let firstInvalidField = null;
 
-            // Validate Bang Tag
-            const bang = document.getElementById('bang');
-            const bangError = document.getElementById('bang-error');
-            if (!bang.value.trim()) {
-                bangError.innerText = 'Bang Tag is required.';
-                bang.classList.add('input-error');
-                bangError.removeAttribute('hidden')
-                isValid = false;
-                if (!firstInvalidField) firstInvalidField = bang;
-            }
-
-            // Validate Bang Domain
-            const bangDomain = document.getElementById('bang-domain');
-            const bangDomainError = document.getElementById('bang-domain-error');
-            if (!bangDomain.value.trim()) {
-                bangDomainError.innerText = 'Bang Domain is required.';
-                bangDomain.classList.add('input-error');
-                bangDomainError.removeAttribute('hidden')
-                isValid = false;
-                if (!firstInvalidField) firstInvalidField = bangDomain;
-            }
-
-            // Validate Bang URL
-            const bangUrl = document.getElementById('bang-url');
-            const bangUrlError = document.getElementById('bang-url-error');
-            if (!bangUrl.value.trim()) {
-                bangUrlError.innerText = 'A valid URL is required.';
-                bangUrl.classList.add('input-error');
-                bangUrlError.removeAttribute('hidden');
-                isValid = false;
-                if (!firstInvalidField) firstInvalidField = bangUrl;
-            } else if (!isValidURL(bangUrl.value.trim())) {
-                bangUrlError.innerText = 'Please enter a valid URL.';
-                bangUrl.classList.add('input-error');
-                bangUrlError.removeAttribute('hidden');
-                isValid = false;
-                if (!firstInvalidField) firstInvalidField = bangUrl;
-            }
+            // Use browser validation for each input field
+            fields.forEach(field => {
+                if (!field.checkValidity()) {
+                    const errorElement = document.getElementById(`${field.id}-error`);
+                    if (errorElement) {
+                        errorElement.innerText = field.validationMessage; // Use browser's validation message
+                        errorElement.removeAttribute('hidden');
+                    }
+                    field.classList.add('input-error');
+                    isValid = false;
+                    if (!firstInvalidField) firstInvalidField = field;
+                }
+            });
 
             // Focus the first invalid field
             if (firstInvalidField) {
