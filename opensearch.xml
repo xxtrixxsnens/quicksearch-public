@@ -2,6 +2,8 @@
 <OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/">
     <ShortName>Quick Search</ShortName>
     <Description>Use Quick Search to use bangs on the client.</Description>
-    <Url type="text/html" template="http://todo.pi/?q={searchTerms}" />
+    <Url type="text/html"
+        template="https://xxtrixxsnens.github.io/quicksearch-public/?q={searchTerms}" />
     <InputEncoding>UTF-8</InputEncoding>
+    <Tags>@quickseach @qs</Tags>
 </OpenSearchDescription>

@@ -1,4 +1,4 @@
-window.custom_bangs = [
+export const custom_bangs = [
     {
         c: "General",
         d: "duckduckgo.com",

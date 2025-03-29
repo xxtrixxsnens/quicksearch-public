@@ -1,4 +1,7 @@
-const bangs = [...window.custom_bangs, ...window.duck_bangs]
+import { custom_bangs } from './bang/custom_bang.js';
+import { duck_bangs } from './bang/bang.js';
+
+const bangs = [...custom_bangs, ...duck_bangs]
 
 function noSearchDefaultPageRender() {
   const app = document.querySelector("#app");
@@ -6,26 +9,26 @@ function noSearchDefaultPageRender() {
     throw new Error("App element not found");
   }
   app.innerHTML = `
-    <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh;">
-      <div class="content-container">
-        <h1>QuickSearch</h1>
-        <p>DuckDuckGo's bang redirects are too slow. Add the following URL as a custom search engine to your browser. Enables <a href="https://duckduckgo.com/bang.html" target="_blank">all of DuckDuckGo's bangs.</a></p>
-        <div class="url-container"> 
-          <input 
-            type="text" 
-            class="url-input"
-            value="custom?q=%s"
-            readonly 
-          />
-          <button class="copy-button">
-            <img src="../public/clipboard.svg" alt="Copy" />
-          </button>
-        </div>
+  <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh;">
+    <div class="content-container">
+      <h1>QuickSearch</h1>
+      <p>A derivative of <a href="https://github.com/t3dotgg/unduck">Unduck by Theo Browne</a>. DuckDuckGo's bang redirects are too slow. Add the following URL as a custom search engine to your browser. Enables <a href="https://duckduckgo.com/bang.html" target="_blank">all of DuckDuckGo's bangs.</a></p>
+      <div class="url-container"> 
+        <input 
+          type="text" 
+          class="url-input"
+          value="https://xxtrixxsnens.github.io/quicksearch-public/?q=%s"
+          readonly 
+        />
+        <button class="copy-button">
+          <img src="./public/clipboard.svg" alt="Copy" />
+        </button>
       </div>
-      <footer class="footer">
-      </footer>
     </div>
-  `;
+    <footer class="footer">
+    </footer>
+  </div>
+`;
 
   const copyButton = app.querySelector(".copy-button");
   if (!copyButton) {
@@ -42,10 +45,10 @@ function noSearchDefaultPageRender() {
 
   copyButton.addEventListener("click", async () => {
     await navigator.clipboard.writeText(urlInput.value);
-    copyIcon.src = "/clipboard-check.svg";
+    copyIcon.src = "./public/clipboard-check.svg";
 
     setTimeout(() => {
-      copyIcon.src = "/clipboard.svg";
+      copyIcon.src = "./public/clipboard.svg";
     }, 2000);
   });
 }
@@ -69,6 +72,12 @@ function getBangredirectUrl() {
   // Remove the first bang from the query
   const cleanQuery = query.replace(/!\S+\s*/i, "").trim();
 
+  if (cleanQuery == "") {
+    const domain = selectedBang?.d;
+    if (!domain) return null;
+    return "https://" + domain;
+  }
+
   // Format of the url is:
   // https://www.google.com/search?q={{{s}}}
   const searchUrl = selectedBang?.u.replace(
@@ -85,6 +94,7 @@ function doRedirect() {
   const searchUrl = getBangredirectUrl();
   if (!searchUrl) return;
   window.location.replace(searchUrl);
+  window.close();
 }
 
 doRedirect();

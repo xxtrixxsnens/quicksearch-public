@@ -1,6 +1,6 @@
 // This file was (mostly) ripped from https://duckduckgo.com/bang.js
 
-window.duck_bangs = [
+export const duck_bangs = [
   {
     c: "Entertainment",
     d: "www.bmw2002faq.com",

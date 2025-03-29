@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Add Bang</title>
+    <link rel="stylesheet" href="../css/global.css" />
+    <link rel="stylesheet" href="../css/form.css" />
+</head>
+
+<body style="background-color: transparent">
+    <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;" id="add">
+        <div class="content-container" id="custom-bang">
+            <h1>Add Custom Bang</h1>
+            <div id="form-container"></div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { Form } from '../js/components/form.js';
+        import { Input } from '../js/components/input.js';
+
+        // Define inputs
+        const inputs = [
+            new Input('bang', 'Bang Tag', '', 'text', 'input-required', null, 'required'),
+            new Input('bang-domain', 'Bang Domain (e.g: duckduckgo.com)', '', 'text', 'input-required', null, 'required'),
+            new Input('bang-url', 'URL (e.g: https://duckduckgo.com/bangs?q={{{s}}})', '', 'url', 'input-required', null, 'required'),
+            new Input('bang-category', 'Optional: Bang Category (e.g: General)', '', 'text', 'input-optional'),
+            new Input('bang-description', 'Optional: Description (e.g: Search the bang shortcuts)', '', 'text', 'input-optional'),
+            new Input('bang-sc', 'Optional: KeyWord (e.g: ChatGPT)', '', 'text', 'input-optional')
+        ];
+
+        // Define form submission handler
+        const handleSubmit = (formData) => {
+            console.log('Form submitted with data:', formData);
+            alert('Bang added successfully!');
+        };
+
+        // Create and render the form
+        const form = new Form(inputs, handleSubmit);
+        document.getElementById('form-container').innerHTML = form.render();
+        form.attachEventListeners();
+    </script>
+</body>
+
+</html>
