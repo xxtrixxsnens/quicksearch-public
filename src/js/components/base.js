@@ -13,8 +13,13 @@ export class Base {
      * @param {string} [obj.innerHTML=''] - Inner HTML content of the element.
      * @param {string} [obj.aboveHTML=''] - HTML content to render above the element.
      * @param {string} [obj.underHTML=''] - HTML content to render below the element.
+     * @param {Object} [obj.sea=undefined] - Values passed that are ignored in this base class
      */
     constructor(obj) {
+        // Ignore
+        obj.sea = undefined;
+
+        // Validate
         Validator.validate_type(obj.id, 'string', 'id must be a string and set in the obj.');
         Validator.validate_type(obj.tag, 'string', 'tag must be a string and set in the obj.');
 
@@ -68,7 +73,7 @@ export class Base {
      * Creates an object with bound methods for rendering, updating, and DOM retrieval.
      * @returns {Object} An object with bound methods.
      */
-    create() {
+    init() {
         const obj = {};
         obj.render = this.render.bind(this);
         obj.update = this.update.bind(this);
@@ -80,8 +85,8 @@ export class Base {
      * Creates a clone of the current Base instance.
      * @returns {Object} A cloned Base instance with bound methods.
      */
-    create_clone() {
-        return Base.fromBase(this.describe()).create();
+    clone() {
+        return Base.fromBase(this.describe()).init();
     }
 
     /**
@@ -142,7 +147,7 @@ export class BaseWithError extends Base {
 
         super(obj);
 
-        this.base = this.create_clone();
+        this.base = this.clone();
 
         this.class = obj.class;
         obj.class = undefined;
@@ -160,7 +165,7 @@ export class BaseWithError extends Base {
             error_message_obj.innerHTML = error_message;
         }
 
-        this.error_msg = new Base(error_message_obj).create();
+        this.error_msg = new Base(error_message_obj).init();
     }
 
     /**

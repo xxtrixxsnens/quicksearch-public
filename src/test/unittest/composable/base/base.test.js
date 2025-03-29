@@ -17,7 +17,7 @@ export function test_base() {
 
         console.log("Input for Base:", obj);
 
-        const base = new Base(obj);
+        const base = new Base(obj).init();
         const renderedHTML = base.render();
 
         console.log("Output for Base render:", renderedHTML);
@@ -36,7 +36,7 @@ export function test_base() {
         console.log("Input for BaseWithError:", obj);
 
         const baseWithError = new BaseWithError(obj, "Error occurred");
-        const renderedHTML = baseWithError.render();
+        const renderedHTML = baseWithError.init().render();
 
         console.log("Output for BaseWithError render:", renderedHTML);
 
@@ -54,7 +54,7 @@ export function test_base() {
 
         console.log("Input for BaseWithError update:", obj);
 
-        const baseWithError = new BaseWithError(obj);
+        const baseWithError = new BaseWithError(obj).init();
         test.innerHTML = baseWithError.render();
 
         console.log("Initial render output:", test.innerHTML);

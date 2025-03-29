@@ -16,7 +16,7 @@ export function test_input() {
             placeholder: "Enter text"
         };
 
-        const input = new Input(obj);
+        const input = new Input(obj).init();
         const renderedHTML = input.render();
         const expect = '<div id="test-input-1-error" class="error-message" hidden="true"></div>   <input id="test-input-1" type="text" class="input-class" placeholder="Enter text">';
 
