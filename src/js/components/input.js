@@ -79,13 +79,6 @@ export class Input extends BaseWithError {
     }
 
     /**
-     * Clears the error message and styling for the input.
-     */
-    clear_error() {
-        super.update(); // Clear error by calling the parent class's update method with no arguments
-    }
-
-    /**
      * Updates the input's error state based on its validity.
      */
     update() {
