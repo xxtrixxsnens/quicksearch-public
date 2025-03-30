@@ -120,7 +120,7 @@ export class Form extends Base {
 
         if (this.validate()) {
             const formData = this.inputs.reduce((data, input) => {
-                data[input.getFromDom().id] = input.getValue();
+                data[input.name] = input.getValue();
                 return data;
             }, {});
             this.onSubmit(formData);

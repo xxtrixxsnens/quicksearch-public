@@ -1,6 +1,26 @@
 import { CONSTANTS } from "/src/js/const.js";
 import { Validator } from "/src/js/utils/validator.js";
 
+class DOMState {
+
+    generateId(id) {
+        if (!id) {
+            // No ID given
+            return this.generateId(crypto.randomUUID());
+        } else {
+            if (document.getElementById(id) !== null) {
+                // ID already exists
+                return this.generateId();
+            }
+
+            // Return 
+            return id;
+        }
+    }
+}
+
+const domState = new DOMState();
+
 /**
  * Utility function to undefine specified properties of an object.
  * @param {Object} obj - The object whose properties need to be undefined.
@@ -28,11 +48,18 @@ export class Base {
      * @param {Object} [obj.event] - Values to bind an Event
      */
     constructor(obj) {
-        // Validate
+
+        // Makes Validation for Inheritance easier
         obj.sea = obj.sea ?? {};
-        Validator.validate_type(obj.id, 'string', 'id must be a string and set in the obj.');
+        // Validate
         Validator.validate_type(obj.tag, 'string', 'tag must be a string and set in the obj.');
         Validator.validate_maybe_type(obj.event, 'object', 'event must be an object.')
+
+        // Name
+        this.name = obj.name ?? obj.id ?? obj.class ?? 'unnamed'
+
+        // DOM State
+        obj.id = domState.generateId(obj.id);
 
         this.attributes = obj;
         this.tag = obj.tag;
@@ -64,6 +91,7 @@ export class Base {
     describe() {
         return {
             ...this.attributes,
+            name: this.name,
             tag: this.tag,
             css: this.css,
             innerHTML: this.innerHTML,
@@ -80,6 +108,7 @@ export class Base {
      */
     core() {
         const obj = {};
+        obj.name = this.name;
         obj.render = this.render.bind(this);
         obj.update = this.update.bind(this);
         obj.getFromDom = this.getFromDom.bind(this);
@@ -100,6 +129,7 @@ export class Base {
      * @returns {Object} A cloned Base instance with bound methods.
      */
     clone() {
+        domState.id_set.delete(this.attributes.id);
         return Base.fromBase(this.describe()).core();
     }
 
@@ -209,7 +239,6 @@ export class BaseWithError extends Base {
         obj.class == obj.class ?? 'base_error';
 
         super(obj);
-        this.base = this.clone();
 
         const error_message_obj = {
             tag: 'div',
@@ -219,14 +248,9 @@ export class BaseWithError extends Base {
         };
 
         this.error_msg = new Base(error_message_obj).init();
-    }
 
-    /**
-     * Renders the HTML element with error handling as a string.
-     * @returns {string} The rendered HTML string.
-     */
-    render() {
-        return `${this.aboveHTML || ''} ${this.error_msg.render()} ${this.base.render()} ${this.underHTML || ''}`;
+        //Update render
+        this.aboveHTML = `${this.aboveHTML} ${this.error_msg.render()}`;
     }
 
     /**
@@ -238,9 +262,9 @@ export class BaseWithError extends Base {
             Validator.validate_type(error_message, 'string', 'error_msg must be a string!');
             this.error_msg.getFromDom().innerHTML = error_message;
             this.error_msg.getFromDom().removeAttribute('hidden');
-            this.base.getFromDom().classList.add(`${this.attributes.class}${BaseWithError.css}`);
+            this.getFromDom().classList.add(`${this.attributes.class}${BaseWithError.css}`);
         } else {
-            this.base.getFromDom().classList.remove(`${this.attributes.class}${BaseWithError.css}`);
+            this.getFromDom().classList.remove(`${this.attributes.class}${BaseWithError.css}`);
             this.error_msg.getFromDom().setAttribute('hidden', 'true');
         }
     }
