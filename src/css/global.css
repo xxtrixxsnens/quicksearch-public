@@ -149,3 +149,54 @@ textarea {
 .footer a:hover {
   color: #333;
 }
+
+/* DROPDOWN */
+.dropdown {
+  position: relative;
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+  text-align: center;
+}
+
+/* Hide options initially */
+.dropdown-options {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: white;
+  border: 1px solid #ccc;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+  width: 150px;
+  z-index: 1000;
+}
+
+/* Show options on hover */
+.dropdown:hover .dropdown-options {
+  display: block;
+}
+
+/* Option styles */
+.option {
+  padding: 10px;
+  cursor: pointer;
+  border-bottom: 1px solid #ddd;
+  text-align: center;
+  background: white;
+}
+
+/* Remove border from last option */
+.option:last-child {
+  border-bottom: none;
+}
+
+/* Hover effect on options */
+.option:hover {
+  background: #007bff;
+  color: white;
+}

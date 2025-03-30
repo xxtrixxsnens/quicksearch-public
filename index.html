@@ -15,8 +15,17 @@
 </head>
 
 <body style="background-color: transparent">
+  <div class="dropdown">
+    Select an Option
+    <div class="dropdown-options">
+      <div class="option" onclick="() => window.href='src/html/add.html'">Add bang</div>
+    </div>
+  </div>
   <div id="app"></div>
   <script type="module" src="src/js/main.js"></script>
+  <script type="module">
+    import { generateBangForm } from '/src/js/bang/sea/mod_custom_bangs.js';
+  </script>
 </body>
 
 </html>
