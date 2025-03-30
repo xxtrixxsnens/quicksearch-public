@@ -159,9 +159,8 @@ export class Base {
                 .then(element => {
                     Object.entries(this.event).forEach(([eventType, eventHandler]) => {
                         if (typeof eventHandler === 'function') {
-                            console.log(`Event handler for event "${eventType}" is a function.`, eventHandler);
                             element.addEventListener(eventType, (event) => {
-                                // event.preventDefault(); // Prevent default behavior
+                                event.preventDefault(); // Prevent default behavior
                                 eventHandler.call(this, event); // Call the original event handler with the correct context
                             });
                         } else {
