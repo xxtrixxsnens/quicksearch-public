@@ -40,40 +40,35 @@ export class Form extends Base {
         obj.tag = 'form';
         obj.class = obj.class || 'form';
 
-        // Set InnerHTML
-        const innerHTML = obj.innerHTML;
-        const input_render = processedInputs.map(input => input.render()).join('');
-        if (innerHTML) {
-            obj.innerHTML = `${innerHTML} ${input_render}`;
-        } else {
-            obj.innerHTML = input_render;
-        }
-
+        // Call Super
         super(obj);
 
-        // Clone for more functionality
-        this.inputs = processedInputs;
-        this.onSubmit = onSubmit;
-
-        // Set own event
-        this.event = {
-            ...this.event,
-            'submit': this.handleSubmit.bind(this)
-        }
-        this.form = this.clone();
-
+        // Set InnerHTML
         // Create Submit Button
         const button = new Button({
-            id: `${this.attributes.id}-submit`,
-            class: `${this.attributes.class}-submit`,
+            id: `${obj.id}-submit`,
+            class: `${obj.class}-submit`,
             type: 'submit',
             innerHTML: 'Submit',
-            event: {
-                submit: this.handleSubmit.bind(this),
-            }
-        }).init(); // Bind event
+        }).core();
 
-        this.button = button;
+        // Modify the render of Form
+        const input_render = processedInputs.map(input => input.render()).join('');
+        const button_render = button.render();
+        if (this.innerHTML) {
+            this.innerHTML = `${this.innerHTML} ${input_render} ${button_render}`
+        } else {
+            this.innerHTML = `${input_render} ${button_render}`;
+        }
+        this.attributes.novalidate = true;
+
+        // Store state
+        this.inputs = processedInputs;
+        this.onSubmit = onSubmit;
+        this.event = {
+            ...this.event,
+            submit: this.handleSubmit.bind(this)
+        }
     }
 
     /**
@@ -99,15 +94,6 @@ export class Form extends Base {
                 inputs: this.inputs,
             },
         };
-    }
-
-
-    /**
-     * Renders the form and its inputs as HTML.
-     * @returns {string} The HTML string for the form.
-     */
-    render() {
-        return `${this.form.render()} ${this.button.render()}`
     }
 
     /**
@@ -141,7 +127,9 @@ export class Form extends Base {
     /**
      * Handles form submission.
      */
-    handleSubmit() {
+    handleSubmit(event) {
+        event.preventDefault();
+
         if (this.validate()) {
             const formData = this.inputs.reduce((data, input) => {
                 data[input.id] = input.getValue();

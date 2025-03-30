@@ -160,8 +160,7 @@ export class Base {
                     Object.entries(this.event).forEach(([eventType, eventHandler]) => {
                         if (typeof eventHandler === 'function') {
                             element.addEventListener(eventType, (event) => {
-                                event.preventDefault(); // Prevent default behavior
-                                eventHandler.call(this, event); // Call the original event handler with the correct context
+                                eventHandler(event);
                             });
                         } else {
                             console.warn(`Event handler for event "${eventType}" is not a function.`);
@@ -169,7 +168,7 @@ export class Base {
                     });
                 })
                 .catch(error => {
-                    throw new Error(`Element with ID "${this.attributes.id}" not found in the DOM. ${error.message}`);
+                    console.error(`Failed to bind events: ${error.message}`);
                 });
         }
     }
