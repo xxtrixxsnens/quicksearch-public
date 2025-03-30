@@ -28,13 +28,11 @@ export class Base {
      * @param {Object} [obj.event] - Values to bind an Event
      */
     constructor(obj) {
-        // Ignore
-        obj.sea = undefined;
-
         // Validate
+        obj.sea = obj.sea ?? {};
         Validator.validate_type(obj.id, 'string', 'id must be a string and set in the obj.');
         Validator.validate_type(obj.tag, 'string', 'tag must be a string and set in the obj.');
-        Validator.validate_type(obj.event || {}, 'object', 'event must be an object.')
+        Validator.validate_maybe_type(obj.event, 'object', 'event must be an object.')
 
         this.attributes = obj;
         this.tag = obj.tag;
@@ -46,7 +44,7 @@ export class Base {
         //Event
         this.event = obj.event;
 
-        // Undefine non-HTML properties
+        // Undefine not attritbutes for the classes
         undefineProperties(obj, ['tag', 'css', 'innerHTML', 'aboveHTML', 'underHTML', 'event']);
     }
 
@@ -113,7 +111,7 @@ export class Base {
         const element = document.createElement(this.tag);
 
         for (const [key, value] of Object.entries(this.attributes)) {
-            if (value !== undefined) {
+            if (value !== undefined && key !== 'sea') {
                 element.setAttribute(key, value);
             }
         }
@@ -201,28 +199,26 @@ export class BaseWithError extends Base {
      * @param {string} attributes.id - The ID of the HTML element.
      * @param {string} attributes.class - The CSS class for the element.
      * @param {string} [attributes.css=''] - CSS classes to apply to the element.
-     * @param {string} [attributes.error_css=''] - CSS classes to apply to the error message.
+     * @param {string} [attributes.sea.error_css=''] - CSS classes to apply to the error message.
      * @param {string} [attributes.innerHTML=''] - Inner HTML content of the element.
      * @param {string} [attributes.aboveHTML=''] - HTML content to render above the element.
      * @param {string} [attributes.underHTML=''] - HTML content to render below the element.
      * @param {string} error_message - The error message to display.
      */
     constructor(obj) {
-        obj.class = obj.class || 'base_error';
-
-        Validator.validate_type(obj.class, 'string', 'class must be a string and set in the obj.');
+        obj.class == obj.class ?? 'base_error';
 
         super(obj);
         this.base = this.clone();
 
         const error_message_obj = {
             tag: 'div',
-            id: `${obj.id}-error`,
+            id: `${this.attributes.id}-error`,
             class: `${BaseWithError.error}`,
             hidden: true
         };
 
-        this.error_msg = new Base(error_message_obj).core();
+        this.error_msg = new Base(error_message_obj).init();
     }
 
     /**

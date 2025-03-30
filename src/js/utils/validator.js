@@ -55,6 +55,13 @@ export class Validator {
         }
     }
 
+    static validate_maybe_type(value, expectedType) {
+        // Option
+        const allowed = ['undefined', 'null', expectedType];
+
+        return Validator.validate_type_options(allowed, typeof value);
+    }
+
     /**
      * Checks if a type is included in an array of allowed types.
      *

@@ -10,18 +10,25 @@ export class Form extends Base {
      * @param {Sea: Input[]} inputs- Array of Inputs stored in sea (@class Base)
      * @param {function} onSubmit - A callback function to handle form submission.
      */
-    constructor(obj, onSubmit) {
+    constructor(obj) {
         // Handle custom inputs
         const inputs = obj.sea.inputs;
 
-        // Validate that inputs is an array of Input instances
+        // Set values
+        obj.tag = 'form';
+        obj.class = obj.class || 'form';
+
+        // Call Super
+        super(obj);
+
+        // region: VALIDATION
         Validator.validateInput(Array.isArray(inputs), 'Inputs must be an array.');
         Validator.validateInput(
             inputs.every(input => Validator.is_of_instance(input, Input)),
             'All elements in the inputs array must be instances of the Input class.'
         );
-        Validator.validate_type(onSubmit, 'function', 'onSubmit must be a function.');
-        Validator.validate_type(obj.innerHTML || '', 'string', 'innerHTML must be a string.');
+        Validator.validate_type(obj.sea.onSubmit, 'function', 'onSubmit must be a function.')
+        // endregion: VALIDATION
 
         // Process Inputs
         const processedInputs = inputs.map((input) => {
@@ -33,15 +40,8 @@ export class Form extends Base {
                 }
             };
 
-            return Input.fromInput(data).init();
+            return new Input(data).init();
         });
-
-        // Set values
-        obj.tag = 'form';
-        obj.class = obj.class || 'form';
-
-        // Call Super
-        super(obj);
 
         // Set InnerHTML
         // Create Submit Button
@@ -64,23 +64,11 @@ export class Form extends Base {
 
         // Store state
         this.inputs = processedInputs;
-        this.onSubmit = onSubmit;
+        this.onSubmit = obj.sea.onSubmit;
         this.event = {
             ...this.event,
             submit: this.handleSubmit.bind(this)
         }
-    }
-
-    /**
-     * Creates a new Form instance from an existing Form instance.
-     * @param {Form} desc - The existing Form instance.
-     * @returns {Form} A new Form instance.
-     */
-    static fromForm(desc) {
-        const onSubmit = desc.sea.onSubmit;
-        return new Form({
-            ...desc
-        }, onSubmit);
     }
 
     describe() {
@@ -132,7 +120,7 @@ export class Form extends Base {
 
         if (this.validate()) {
             const formData = this.inputs.reduce((data, input) => {
-                data[input.id] = input.getValue();
+                data[input.getFromDom().id] = input.getValue();
                 return data;
             }, {});
             this.onSubmit(formData);

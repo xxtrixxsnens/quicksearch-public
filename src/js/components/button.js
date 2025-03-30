@@ -6,27 +6,21 @@ export class Button extends Base {
         'button', 'reset', 'submit'
     ];
 
-    constructor(obj, validator) {
-        Validator.validate_type_options(Button.VALID_TYPES, obj.type || 'button');
-
+    constructor(obj) {
+        obj.type ?? 'button';
         // Setting values
-        obj.tag = 'input';
+        obj.tag = 'button';
 
+        // VALIDATION
         // Call super
         super(obj);
+        Validator.validate_type_options(Button.VALID_TYPES, obj.type);
+        Validator.validate_maybe_type(obj.sea.validate, 'function', 'Button expects obj.sea.validate to be a function')
+        //VALIDATION
 
-        this.validator = validator;
-    }
 
-    /**
-     * Creates a new Button instance from an existing Button instance.
-     * @param {Button} desc - The existing Button instance.
-     * @returns {Button} A new Base instance.
-     */
-    static fromButton(desc) {
-        return new Button({
-            ...desc
-        }, desc.sea.validator);
+
+        this.validator = obj.sea.validator;
     }
 
     describe() {

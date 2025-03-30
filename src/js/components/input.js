@@ -23,37 +23,23 @@ export class Input extends BaseWithError {
      * @param {Object} obj - Object containing attributes for the input element.
      * @param {function} [validator] - A custom validation function.
      */
-    constructor(obj, validator) {
-        Validator.validate_type_options(Input.VALID_TYPES, obj.type || 'text');
-        if (validator) {
-            Validator.validate_type(validator, 'function', 'Validator must be a function.');
-        }
-
+    constructor(obj) {
         // Setting values
         obj.tag = 'input';
-
-        // Call super
+        // VALIDATION
         super(obj);
+        Validator.validate_type_options(Input.VALID_TYPES, obj.type);
+        Validator.validate_maybe_type(obj.sea.validator, 'function', 'Validator must be a function.');
+        // VALIDATION
 
-        this.validator = validator;
+        this.validator = obj.sea.validator;
     }
 
     core() {
         const core = super.core();
         core.is_valid = this.is_valid.bind(this);
+        core.getValue = this.getValue.bind(this);
         return core;
-    }
-
-    /**
-     * Creates a new Input instance from an existing Input instance.
-     * @param {Input} desc - The existing Base instance.
-     * @returns {Input} A new Base instance.
-     */
-    static fromInput(desc) {
-        const validator = desc.sea.validator || undefined;
-        return new Input({
-            ...desc
-        }, validator);
     }
 
     describe() {
