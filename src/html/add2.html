@@ -96,7 +96,12 @@
         };
 
         // Create and render the form
-        const form = new Form({ id: 'custom-bang-form', class: 'custom-form', sea: { inputs } }, handleSubmit).init(); // init to bind eventlistener
+        const form = new Form({
+            id: 'custom-bang-form',
+            class: 'custom-form', sea: { inputs },
+            style: "margin-top: 5%;"
+        },
+            handleSubmit).init(); // init to bind eventlistener
         document.getElementById('form-container').innerHTML = form.render();
     </script>
 </body>
