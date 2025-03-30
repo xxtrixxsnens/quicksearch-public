@@ -55,11 +55,11 @@ export class Form extends Base {
 
         // Create Submit Button
         const button = new Button({
-            id: `${this.obj.id}-submit`,
-            class: `${this.obj.class}-submit`,
+            id: `${this.attributes.id}-submit`,
+            class: `${this.attributes.class}-submit`,
             type: 'submit',
             innerHTML: 'Submit',
-        }).init();
+        }).core();
 
         this.button = button;
     }

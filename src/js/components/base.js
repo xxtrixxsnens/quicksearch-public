@@ -23,7 +23,7 @@ export class Base {
         Validator.validate_type(obj.id, 'string', 'id must be a string and set in the obj.');
         Validator.validate_type(obj.tag, 'string', 'tag must be a string and set in the obj.');
 
-        this.obj = obj;
+        this.attributes = obj;
         this.tag = obj.tag;
         this.css = obj.css || '';
         this.innerHTML = obj.innerHTML || '';
@@ -53,7 +53,7 @@ export class Base {
      */
     describe() {
         return {
-            ...this.obj,
+            ...this.attributes,
             tag: this.tag,
             css: this.css,
             innerHTML: this.innerHTML,
@@ -63,10 +63,12 @@ export class Base {
     }
 
     /**
-     * Creates an object with bound methods for rendering, updating, and DOM retrieval.
-     * @returns {Object} An object with bound methods.
+     * Core functions
+     * 
+     * Creates an object with bound methods for rendering, updating, and DOM retrieval and describe.
+     * @returns {Object} An object with the core functions.
      */
-    init() {
+    core() {
         const obj = {};
         obj.render = this.render.bind(this);
         obj.update = this.update.bind(this);
@@ -80,7 +82,7 @@ export class Base {
      * @returns {Object} A cloned Base instance with bound methods.
      */
     clone() {
-        return Base.fromBase(this.describe()).init();
+        return Base.fromBase(this.describe()).core();
     }
 
     /**
@@ -90,7 +92,7 @@ export class Base {
     render() {
         const element = document.createElement(this.tag);
 
-        for (const [key, value] of Object.entries(this.obj)) {
+        for (const [key, value] of Object.entries(this.attributes)) {
             if (value !== undefined) {
                 element.setAttribute(key, value);
             }
@@ -113,7 +115,7 @@ export class Base {
      * @returns {HTMLElement|null} The DOM element or null if not found.
      */
     getFromDom() {
-        return document.getElementById(this.obj.id);
+        return document.getElementById(this.attributes.id);
     }
 }
 
@@ -125,14 +127,14 @@ export class BaseWithError extends Base {
     static error = CONSTANTS.ERROR_MESSAGE;
 
     /**
-     * @param {Object} obj - Object containing attributes for the HTML element.
-     * @param {string} obj.id - The ID of the HTML element.
-     * @param {string} obj.class - The CSS class for the element.
-     * @param {string} [obj.css=''] - CSS classes to apply to the element.
-     * @param {string} [obj.error_css=''] - CSS classes to apply to the error message.
-     * @param {string} [obj.innerHTML=''] - Inner HTML content of the element.
-     * @param {string} [obj.aboveHTML=''] - HTML content to render above the element.
-     * @param {string} [obj.underHTML=''] - HTML content to render below the element.
+     * @param {Object} attributes - Object containing attributes for the HTML element.
+     * @param {string} attributes.id - The ID of the HTML element.
+     * @param {string} attributes.class - The CSS class for the element.
+     * @param {string} [attributes.css=''] - CSS classes to apply to the element.
+     * @param {string} [attributes.error_css=''] - CSS classes to apply to the error message.
+     * @param {string} [attributes.innerHTML=''] - Inner HTML content of the element.
+     * @param {string} [attributes.aboveHTML=''] - HTML content to render above the element.
+     * @param {string} [attributes.underHTML=''] - HTML content to render below the element.
      * @param {string} error_message - The error message to display.
      */
     constructor(obj) {
@@ -150,7 +152,7 @@ export class BaseWithError extends Base {
             hidden: true
         };
 
-        this.error_msg = new Base(error_message_obj).init();
+        this.error_msg = new Base(error_message_obj).core();
     }
 
     /**
@@ -170,9 +172,9 @@ export class BaseWithError extends Base {
             Validator.validate_type(error_message, 'string', 'error_msg must be a string!');
             this.error_msg.getFromDom().innerHTML = error_message;
             this.error_msg.getFromDom().removeAttribute('hidden');
-            this.base.getFromDom().classList.add(`${this.obj.class}${BaseWithError.css}`);
+            this.base.getFromDom().classList.add(`${this.attributes.class}${BaseWithError.css}`);
         } else {
-            this.base.getFromDom().classList.remove(`${this.obj.class}${BaseWithError.css}`);
+            this.base.getFromDom().classList.remove(`${this.attributes.class}${BaseWithError.css}`);
             this.error_msg.getFromDom().setAttribute('hidden', 'true');
         }
     }
