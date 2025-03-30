@@ -2,6 +2,17 @@ import { CONSTANTS } from "/src/js/const.js";
 import { Validator } from "/src/js/utils/validator.js";
 
 /**
+ * Utility function to undefine specified properties of an object.
+ * @param {Object} obj - The object whose properties need to be undefined.
+ * @param {string[]} properties - Array of property names to undefine.
+ */
+function undefineProperties(obj, properties) {
+    properties.forEach(property => {
+        obj[property] = undefined;
+    });
+}
+
+/**
  * Base class for creating and managing HTML elements.
  */
 export class Base {
@@ -14,6 +25,7 @@ export class Base {
      * @param {string} [obj.aboveHTML=''] - HTML content to render above the element.
      * @param {string} [obj.underHTML=''] - HTML content to render below the element.
      * @param {Object} [obj.sea=undefined] - Values passed that are ignored in this base class
+     * @param {Object} [obj.event] - Values to bind an Event
      */
     constructor(obj) {
         // Ignore
@@ -22,6 +34,7 @@ export class Base {
         // Validate
         Validator.validate_type(obj.id, 'string', 'id must be a string and set in the obj.');
         Validator.validate_type(obj.tag, 'string', 'tag must be a string and set in the obj.');
+        Validator.validate_type(obj.event || {}, 'object', 'event must be an object.')
 
         this.attributes = obj;
         this.tag = obj.tag;
@@ -30,12 +43,11 @@ export class Base {
         this.aboveHTML = obj.aboveHTML || '';
         this.underHTML = obj.underHTML || '';
 
-        // Undefine non HTML
-        obj.tag = undefined;
-        obj.css = undefined;
-        obj.innerHTML = undefined;
-        obj.aboveHTML = undefined;
-        obj.underHTML = undefined;
+        //Event
+        this.event = obj.event;
+
+        // Undefine non-HTML properties
+        undefineProperties(obj, ['tag', 'css', 'innerHTML', 'aboveHTML', 'underHTML', 'event']);
     }
 
     /**
@@ -74,7 +86,15 @@ export class Base {
         obj.update = this.update.bind(this);
         obj.getFromDom = this.getFromDom.bind(this);
         obj.describe = this.describe.bind(this);
+        obj.bindEvents = this.bindEvents.bind(this);
         return obj;
+    }
+
+    init() {
+        const core = this.core();
+        // Call async functions
+        this.bindEvents();
+        return core;
     }
 
     /**
@@ -101,6 +121,58 @@ export class Base {
         if (this.innerHTML) element.innerHTML = this.innerHTML;
 
         return `${this.aboveHTML || ''} ${element.outerHTML} ${this.underHTML || ''}`;
+    }
+
+    /**
+     * Waits for the element to be available in the DOM.
+     * @param {number} [interval=100] - The interval (in milliseconds) to check for the element.
+     * @param {number} [timeout=5000] - The maximum time (in milliseconds) to wait for the element.
+     * @returns {Promise<HTMLElement>} A promise that resolves with the element or rejects if not found within the timeout.
+     */
+    waitForElement(interval = 100, timeout = 60000) {
+        return new Promise((resolve, reject) => {
+            const startTime = Date.now();
+
+            const checkElement = () => {
+                const element = this.getFromDom();
+                if (element) {
+                    resolve(element);
+                } else if (Date.now() - startTime >= timeout) {
+                    reject(new Error(`Element with ID "${this.attributes.id}" not found within ${timeout}ms.`));
+                } else {
+                    setTimeout(checkElement, interval);
+                }
+            };
+
+            checkElement();
+        });
+    }
+
+    /**
+     * Function to bind the events
+     * 
+     * @throws [NullError] if the element is not found in the document
+     */
+    bindEvents() {
+        if (this.event && typeof this.event === 'object') {
+            this.waitForElement()
+                .then(element => {
+                    Object.entries(this.event).forEach(([eventType, eventHandler]) => {
+                        if (typeof eventHandler === 'function') {
+                            console.log(`Event handler for event "${eventType}" is a function.`, eventHandler);
+                            element.addEventListener(eventType, (event) => {
+                                event.preventDefault(); // Prevent default behavior
+                                eventHandler.call(this, event); // Call the original event handler with the correct context
+                            });
+                        } else {
+                            console.warn(`Event handler for event "${eventType}" is not a function.`);
+                        }
+                    });
+                })
+                .catch(error => {
+                    throw new Error(`Element with ID "${this.attributes.id}" not found in the DOM. ${error.message}`);
+                });
+        }
     }
 
     /**

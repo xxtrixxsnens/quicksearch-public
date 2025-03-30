@@ -38,6 +38,12 @@ export class Input extends BaseWithError {
         this.validator = validator;
     }
 
+    core() {
+        const core = super.core();
+        core.is_valid = this.is_valid.bind(this);
+        return core;
+    }
+
     /**
      * Creates a new Input instance from an existing Input instance.
      * @param {Input} desc - The existing Base instance.
