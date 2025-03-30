@@ -13,22 +13,80 @@
     <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;" id="add">
         <div class="content-container" id="custom-bang">
             <h1>Add Custom Bang</h1>
+
+            <div id="explain"></div>
+
+            <p class="custom-paragraph">The {{{s}}} in the URL is a placeholder that will be replaced dynamically with
+                the user's search term when the bang is used. For example, if the user searches for "example" using the
+                bang, the URL https://duckduckgo.com/bangs?q={{{s}}} will become https://duckduckgo.com/bangs?q=example.
+            </p>
+
+            <button id="toggle" onclick="toggle_explanation()">Show full explanation</button>
             <div id="form-container"></div>
         </div>
     </div>
+    <script>
+        const explain = `<p class="custom-paragraph">The form in the add.html file is designed to collect details for adding a
+                                        "Custom Bang,"
+                                        which is
+                                        essentially a shortcut
+                                        for a search query. Here's what each field expects:</p>
+                        
+                                    <p class="custom-paragraph"><strong>Bang Tag</strong> Name (id="bang (e.g: bang)"): The name of the custom
+                                        bang (e.g., "bang").
+                                    </p>
+                        
+                                    <p class="custom-paragraph"><strong>Bang Domain</strong> (id="bang-domain"): The domain of the search engine
+                                        or website
+                                        (e.g.,
+                                        "duckduckgo.com").</p>
+                        
+                                    <p class="custom-paragraph"><strong>URL</strong> (id="bang-domain"): The URL template for the search query.
+                                        The placeholder
+                                        {{{s}}}
+                                        should be used to
+                                        indicate where
+                                        the search keyword will be inserted (e.g., https://duckduckgo.com/bangs?q={{{s}}}).</p>
+                        
+                                    <p class="custom-paragraph"><strong>Bang Category</strong> (id="bang-category"): An optional category for
+                                        the bang (e.g.,
+                                        "General").</p>
+                        
+                                    <p class="custom-paragraph"><strong>Description</strong> (id="bang-description"): An optional description of
+                                        the bang (e.g.,
+                                        "Search the
+                                        bang
+                                        shortcuts").</p>
+                        
+                                    <p class="custom-paragraph"><strong>Keyword</strong> (id="bang-sc"): An optional keyword or shortcut for the
+                                        bang (e.g.,
+                                        "ChatGPT").</p>`
+
+        const toggle_explanation = () => {
+            element = document.getElementById("explain");
+            button = document.getElementById("toggle");
+            if (element.innerHTML !== explain) {
+                element.innerHTML = explain;
+                button.innerHTML = "Show less";
+            } else {
+                element.innerHTML = "";
+                button.innerHTML = "Show full explanation";
+            }
+        }
+    </script>
 
     <script type="module">
-        import { Form } from '../js/components/form.js';
-        import { Input } from '../js/components/input.js';
+        import { Form } from '/src/js/components/form.js';
+        import { Input } from '/src/js/components/input.js';
 
         // Define inputs
         const inputs = [
-            new Input('bang', 'Bang Tag', '', 'text', 'input-required', null, 'required'),
-            new Input('bang-domain', 'Bang Domain (e.g: duckduckgo.com)', '', 'text', 'input-required', null, 'required'),
-            new Input('bang-url', 'URL (e.g: https://duckduckgo.com/bangs?q={{{s}}})', '', 'url', 'input-required', null, 'required'),
-            new Input('bang-category', 'Optional: Bang Category (e.g: General)', '', 'text', 'input-optional'),
-            new Input('bang-description', 'Optional: Description (e.g: Search the bang shortcuts)', '', 'text', 'input-optional'),
-            new Input('bang-sc', 'Optional: KeyWord (e.g: ChatGPT)', '', 'text', 'input-optional')
+            new Input({ id: 'bang', type: 'text', class: 'input-required', placeholder: 'Bang Tag', required: true }),
+            new Input({ id: 'bang-domain', type: 'text', class: 'input-required', placeholder: 'Bang Domain (e.g: duckduckgo.com)', required: true }),
+            new Input({ id: 'bang-url', type: 'url', class: 'input-required', placeholder: 'URL (e.g: https://duckduckgo.com/bangs?q={{{s}}})', required: true }),
+            new Input({ id: 'bang-category', type: 'text', class: 'input-optional', placeholder: 'Optional: Bang Category (e.g: General)' }),
+            new Input({ id: 'bang-description', type: 'text', class: 'input-optional', placeholder: 'Optional: Description (e.g: Search the bang shortcuts)' }),
+            new Input({ id: 'bang-sc', type: 'text', class: 'input-optional', placeholder: 'Optional: KeyWord (e.g: ChatGPT)' })
         ];
 
         // Define form submission handler
@@ -38,7 +96,7 @@
         };
 
         // Create and render the form
-        const form = new Form(inputs, handleSubmit);
+        const form = new Form({ id: 'custom-bang-form', class: 'custom-form', sea: { inputs } }, handleSubmit);
         document.getElementById('form-container').innerHTML = form.render();
         form.attachEventListeners();
     </script>

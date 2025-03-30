@@ -3,7 +3,7 @@ import { Button } from "./button.js"
 import { Input } from "./input.js"
 import { Base } from "./base.js"
 
-export class Form {
+export class Form extends Base {
     /**
      * Constructor for the Form class.
      * @param {Object} obj - Object containing attributes for the HTML element.
@@ -11,7 +11,7 @@ export class Form {
      * @param {function} onSubmit - A callback function to handle form submission.
      */
     constructor(obj, onSubmit) {
-        // Handle custom input
+        // Handle custom inputs
         const inputs = obj.sea.inputs;
 
         // Validate that inputs is an array of Input instances
@@ -21,11 +21,72 @@ export class Form {
             'All elements in the inputs array must be instances of the Input class.'
         );
         Validator.validate_type(onSubmit, 'function', 'onSubmit must be a function.');
+        Validator.validate_type(obj.innerHTML || '', 'string', 'innerHTML must be a string.');
 
-        super(obj)
+        // Process Inputs
+        const processedInputs = inputs.map((input) => {
+            const data = {
+                ...(input.describe()),
+                class: input.describe().class || obj.class || 'form-input'
+            };
 
-        this.inputs = inputs;
+            return Input.fromInput(data);
+        });
+
+        // Set values
+        obj.tag = 'form';
+        obj.class = obj.class || 'form';
+
+        // Set InnerHTML
+        const innerHTML = obj.innerHTML;
+        const input_render = processedInputs.map(input => input.render()).join('');
+        if (innerHTML) {
+            obj.innerHTML = `${innerHTML} ${input_render}`;
+        } else {
+            obj.innerHTML = input_render;
+        }
+
+        super(obj);
+        // To create an own render()
+        this.form = this.clone();
+
+        this.inputs = processedInputs;
         this.onSubmit = onSubmit;
+
+        // Create Submit Button
+        const button = new Button({
+            id: `${this.obj.id}-submit`,
+            class: `${this.obj.class}-submit`,
+            type: 'submit',
+            innerHTML: 'Submit',
+        }).init();
+
+        this.button = button;
+    }
+
+    /**
+     * Creates a new Form instance from an existing Form instance.
+     * @param {Form} desc - The existing Form instance.
+     * @returns {Form} A new Form instance.
+     */
+    static fromForm(desc) {
+        const onSubmit = desc.sea.onSubmit;
+        return new Form({
+            ...desc
+        }, onSubmit);
+    }
+
+    describe() {
+        const superDescription = super.describe();
+        return {
+            ...superDescription,
+            tag: this.tag,
+            sea: {
+                ...superDescription.sea,
+                validator: this.onSubmit,
+                inputs: this.inputs,
+            },
+        };
     }
 
 
@@ -34,14 +95,7 @@ export class Form {
      * @returns {string} The HTML string for the form.
      */
     render() {
-        const inputsHTML = this.inputs.map(input => input.render()).join('');
-        const additionalArgs = this.args ? this.args.join(' ') : '';
-        return `
-            <form id="${this.id}" class="${this.class}" onsubmit="return false;" novalidate ${additionalArgs}>
-                ${inputsHTML}
-                <button class="button-form" type="submit">Add Bang</button>
-            </form>
-        `;
+        return `${this.form.render()} ${this.button.render()}`
     }
 
     /**
@@ -65,6 +119,12 @@ export class Form {
             if (inputElement) {
                 inputElement.addEventListener('input', () => input.update());
             }
+        });
+
+        // Attach the event listener programmatically
+        this.button.getFromDom().addEventListener('click', (event) => {
+            event.preventDefault(); // Prevent default form submission
+            this.handleSubmit();    // Call the handleSubmit method
         });
     }
 

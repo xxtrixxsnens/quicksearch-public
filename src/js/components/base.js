@@ -40,18 +40,11 @@ export class Base {
 
     /**
      * Creates a new Base instance from an existing Base instance.
-     * @param {Base} base - The existing Base instance.
+     * @param {Base} desc - The existing Base instance.
      * @returns {Base} A new Base instance.
      */
-    static fromBase(base) {
-        return new Base({
-            ...base.obj,
-            tag: base.tag,
-            css: base.css,
-            innerHTML: base.innerHTML,
-            aboveHTML: base.aboveHTML,
-            underHTML: base.underHTML,
-        });
+    static fromBase(desc) {
+        return new Base(desc);
     }
 
     /**
@@ -60,8 +53,8 @@ export class Base {
      */
     describe() {
         return {
+            ...this.obj,
             tag: this.tag,
-            obj: this.obj,
             css: this.css,
             innerHTML: this.innerHTML,
             aboveHTML: this.aboveHTML,
@@ -78,6 +71,7 @@ export class Base {
         obj.render = this.render.bind(this);
         obj.update = this.update.bind(this);
         obj.getFromDom = this.getFromDom.bind(this);
+        obj.describe = this.describe.bind(this);
         return obj;
     }
 
@@ -141,18 +135,13 @@ export class BaseWithError extends Base {
      * @param {string} [obj.underHTML=''] - HTML content to render below the element.
      * @param {string} error_message - The error message to display.
      */
-    constructor(obj, error_message) {
+    constructor(obj) {
+        obj.class = obj.class || 'base_error';
+
         Validator.validate_type(obj.class, 'string', 'class must be a string and set in the obj.');
-        Validator.validate_type(error_message || '', 'string', 'error_msg must be a string!');
 
         super(obj);
-
         this.base = this.clone();
-
-        this.class = obj.class;
-        obj.class = undefined;
-
-        this.obj = obj;
 
         const error_message_obj = {
             tag: 'div',
@@ -160,10 +149,6 @@ export class BaseWithError extends Base {
             class: `${BaseWithError.error}`,
             hidden: true
         };
-        if (!!error_message) {
-            error_message_obj.hidden = undefined;
-            error_message_obj.innerHTML = error_message;
-        }
 
         this.error_msg = new Base(error_message_obj).init();
     }
@@ -185,9 +170,9 @@ export class BaseWithError extends Base {
             Validator.validate_type(error_message, 'string', 'error_msg must be a string!');
             this.error_msg.getFromDom().innerHTML = error_message;
             this.error_msg.getFromDom().removeAttribute('hidden');
-            this.base.getFromDom().classList.add(`${this.class}${BaseWithError.css}`);
+            this.base.getFromDom().classList.add(`${this.obj.class}${BaseWithError.css}`);
         } else {
-            this.base.getFromDom().classList.remove(`${this.class}${BaseWithError.css}`);
+            this.base.getFromDom().classList.remove(`${this.obj.class}${BaseWithError.css}`);
             this.error_msg.getFromDom().setAttribute('hidden', 'true');
         }
     }

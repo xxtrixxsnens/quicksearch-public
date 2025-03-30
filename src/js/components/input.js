@@ -39,6 +39,30 @@ export class Input extends BaseWithError {
     }
 
     /**
+     * Creates a new Input instance from an existing Input instance.
+     * @param {Input} desc - The existing Base instance.
+     * @returns {Input} A new Base instance.
+     */
+    static fromInput(desc) {
+        const validator = desc.sea.validator || undefined;
+        return new Input({
+            ...desc
+        }, validator);
+    }
+
+    describe() {
+        const superDescription = super.describe();
+        return {
+            ...superDescription,
+            tag: this.tag,
+            sea: {
+                ...superDescription.sea, // Merge the `sea` object from super.describe()
+                validator: this.validator,
+            },
+        };
+    }
+
+    /**
      * Validates the input value.
      * @returns {true|string} True if valid, or an error message if invalid.
      */
