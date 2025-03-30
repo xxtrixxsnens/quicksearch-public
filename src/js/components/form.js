@@ -27,10 +27,13 @@ export class Form extends Base {
         const processedInputs = inputs.map((input) => {
             const data = {
                 ...(input.describe()),
-                class: input.describe().class || obj.class || 'form-input'
+                class: input.describe().class || obj.class || 'form-input',
+                event: {
+                    input: () => input.update(),
+                }
             };
 
-            return Input.fromInput(data);
+            return Input.fromInput(data).init();
         });
 
         // Set values
@@ -47,11 +50,17 @@ export class Form extends Base {
         }
 
         super(obj);
-        // To create an own render()
-        this.form = this.clone();
 
+        // Clone for more functionality
         this.inputs = processedInputs;
         this.onSubmit = onSubmit;
+
+        // Set own event
+        this.event = {
+            ...this.event,
+            'submit': this.handleSubmit.bind(this)
+        }
+        this.form = this.clone();
 
         // Create Submit Button
         const button = new Button({
@@ -59,7 +68,10 @@ export class Form extends Base {
             class: `${this.attributes.class}-submit`,
             type: 'submit',
             innerHTML: 'Submit',
-        }).core();
+            event: {
+                submit: this.handleSubmit.bind(this),
+            }
+        }).init(); // Bind event
 
         this.button = button;
     }
@@ -83,7 +95,7 @@ export class Form extends Base {
             tag: this.tag,
             sea: {
                 ...superDescription.sea,
-                validator: this.onSubmit,
+                onSubmit: this.onSubmit,
                 inputs: this.inputs,
             },
         };
@@ -96,36 +108,6 @@ export class Form extends Base {
      */
     render() {
         return `${this.form.render()} ${this.button.render()}`
-    }
-
-    /**
-     * Attaches event listeners to the form and its inputs.
-     */
-    attachEventListeners() {
-        const formElement = this.getFromDom();
-        if (!formElement) {
-            throw new Error('Form element not found.');
-        }
-
-        // Attach submit event listener
-        formElement.addEventListener('submit', event => {
-            event.preventDefault();
-            this.handleSubmit();
-        });
-
-        // Attach input validation listeners
-        this.inputs.forEach(input => {
-            const inputElement = input.getFromDom();
-            if (inputElement) {
-                inputElement.addEventListener('input', () => input.update());
-            }
-        });
-
-        // Attach the event listener programmatically
-        this.button.getFromDom().addEventListener('click', (event) => {
-            event.preventDefault(); // Prevent default form submission
-            this.handleSubmit();    // Call the handleSubmit method
-        });
     }
 
     /**
