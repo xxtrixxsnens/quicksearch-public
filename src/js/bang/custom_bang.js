@@ -1,4 +1,4 @@
-window.custom_bangs = [
+export const custom_bangs = [
     {
         c: "General",
         d: "duckduckgo.com",
@@ -16,5 +16,14 @@ window.custom_bangs = [
         sc: "ChatGPT",
         t: "gpt",
         u: "https://chatgpt.com/?q={{{s}}}",
+    },
+    {
+        c: "General",
+        d: "xxtrixxsnens.github.io/quicksearch-public/",
+        r: 0,
+        s: "Go to search Engine",
+        sc: "QuickSearch",
+        t: "home",
+        u: "https://xxtrixxsnens.github.io/quicksearch-public/",
     },
 ]

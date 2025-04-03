@@ -1,0 +1,367 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <base href="https://xxtrixxsnens.github.io/quicksearch-public/">
+    <title>Add Bang</title>
+    <style>
+        :root {
+            --bg-color: #f9fafb;
+            --text-color: #374151;
+            --card-bg: #fff;
+            --input-bg: #f5f5f5;
+            --input-border: #ddd;
+            --button-bg: #007bff;
+            --button-text: #fff;
+            --button-hover-bg: #0056b3;
+            --paragraph-color: #333;
+            --input-error-border: #dc2626;
+            --input-error-bg: #fee2e2;
+        }
+
+        .dark-mode {
+            --bg-color: #111827;
+            --text-color: #d1d5db;
+            --card-bg: #1f2937;
+            --input-bg: #374151;
+            --input-border: #4b5563;
+            --button-bg: #007bff;
+            --button-text: #fff;
+            --button-hover-bg: #0056b3;
+            --paragraph-color: #9ca3af;
+            --input-error-border: #f87171;
+            --input-error-bg: #374151;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: sans-serif;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .content-container {
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+            padding: 2rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+            background-color: var(--card-bg);
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        h1 {
+            margin-top: 5%;
+        }
+
+        .custom-paragraph {
+            font-family: Georgia, serif;
+            font-size: 16px;
+            line-height: 1.6;
+            color: var(--paragraph-color);
+            margin: 2% 0;
+            padding: 2%;
+            border-left: 1% solid #0078d7;
+            text-align: left;
+            transition: color 0.3s;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 5%;
+        }
+
+        input {
+            padding: 10px;
+            border: 1px solid var(--input-border);
+            border-radius: 4px;
+            font-size: 16px;
+            background-color: var(--input-bg);
+            color: var(--text-color);
+            transition: background-color 0.3s, border-color 0.3s, color 0.3s;
+        }
+
+        .input-required {
+            border-width: 2px;
+            border-color: #007bff;
+            background-color: #e6f7ff;
+        }
+
+        .input-required:focus {
+            border-color: #0056b3;
+            background-color: #d0ebff;
+        }
+
+        .input-optional {
+            border-width: 2px;
+            border-color: #28a745;
+            background-color: #e9fbe6;
+        }
+
+        .input-optional:focus {
+            border-color: #1e7e34;
+            background-color: #d4f5d0;
+        }
+
+        .dark-mode .input-required {
+            border-color: #68b0f0;
+            background-color: #2d3748;
+        }
+
+        .dark-mode .input-required:focus {
+            border-color: #a7f3d0;
+            background-color: #1e293b;
+        }
+
+        .dark-mode .input-optional {
+            border-color: #34d399;
+            background-color: #2d3748;
+        }
+
+        .dark-mode .input-optional:focus {
+            border-color: #a7f3d0;
+            background-color: #1e293b;
+        }
+
+        button.button-form {
+            padding: 10px;
+            background-color: var(--button-bg);
+            color: var(--button-text);
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button.button-form:hover {
+            background-color: var(--button-hover-bg);
+        }
+
+        button.button-form:focus {
+            outline: none;
+            box-shadow: 0 0 5px #0078d7;
+        }
+
+        #toggle {
+            background-color: #0078d7;
+            color: white;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        #toggle:hover {
+            background-color: #005a9e;
+        }
+
+        #toggle:focus {
+            outline: none;
+            box-shadow: 0 0 5px #0078d7;
+        }
+
+        .input-error {
+            border-color: var(--input-error-border) !important;
+            background-color: var(--input-error-bg) !important;
+        }
+
+        .error-message {
+            color: var(--input-error-border);
+            font-size: 0.8rem;
+            margin-top: 5px;
+            display: block;
+        }
+
+        .error-message[hidden] {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <!--Dark / Light-->
+    <script>
+        const body = document.body;
+        const bool = localStorage.getItem('darkMode') === 'enabled';
+        if (bool) {
+            body.classList.add('dark-mode');
+        }
+
+        // Render HTML
+        body.innerHTML = `    <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;" id="add">
+        <div class="content-container" id="custom-bang">
+            <h1>Add Custom Bang</h1>
+
+            <div id="explain"></div>
+
+            <p class="custom-paragraph">The {{{s}}} in the URL is a placeholder that will be replaced dynamically with
+                the user's
+                search term
+                when the bang is
+                used. For example, if the user searches for "example" using the bang, the URL
+                https://duckduckgo.com/bangs?q={{{s}}}
+                will become https://duckduckgo.com/bangs?q=example.</p>
+
+            <button id="toggle" onclick="toggle_explanation()">Show full explanation</button>
+
+            <form style="margin-top: 5%;" id="custom-bang-form">
+                <input class="input-required" type="text" id="bang" placeholder="Bang Tag" required />
+
+                <input class="input-required" type="text" id="bang-domain"
+                    placeholder="Bang Domain (e.g: duckduckgo.com)" required />
+
+                <input class="input-required" type="url" id="bang-url"
+                    placeholder="URL (e.g: https://duckduckgo.com/bangs?q={{{s}}})" required />
+
+                <input class="input-optional" type="text" id="bang-category"
+                    placeholder="Optional: Bang Category (e.g: General)" />
+
+                <input class="input-optional" type="text" id="bang-description"
+                    placeholder="Optional: Description (e.g: Search the bang shortcuts)" />
+
+                <input class="input-optional" type="text" id="bang-sc" placeholder="Optional: KeyWord (e.g: ChatGPT)" />
+
+                <button class="button-form" type="submit">Add Bang</button>
+            </form>
+        </div>
+    </div>`
+    </script>
+    <script type="module">
+        import { bang_insert } from '/quicksearch-public/src/js/store.js';
+
+        document.getElementById('custom-bang-form').addEventListener('submit', processForm);
+
+        function processForm(event) {
+            event.preventDefault(); // Prevent form submission
+
+            // Get the form element
+            const form = document.getElementById('custom-bang-form');
+
+            // Clear previous custom error messages
+            document.querySelectorAll('.error-message').forEach(el => {
+                el.innerHTML = '';
+                el.setAttribute('hidden', 'true');
+            });
+            const fields = form.querySelectorAll('input');
+            fields.forEach(field => {
+                field.classList.remove('input-error');
+            })
+
+            let isValid = true;
+            let firstInvalidField = null;
+
+            // Use browser validation for each input field
+            fields.forEach(field => {
+                if (!field.checkValidity()) {
+                    const errorElement = document.getElementById(`${field.id}-error`);
+                    if (errorElement) {
+                        errorElement.innerText = field.validationMessage; // Use browser's validation message
+                        errorElement.removeAttribute('hidden');
+                    }
+                    field.classList.add('input-error');
+                    isValid = false;
+                    if (!firstInvalidField) firstInvalidField = field;
+                }
+            });
+
+            // Focus the first invalid field
+            if (firstInvalidField) {
+                firstInvalidField.focus();
+            }
+
+            // If the form is valid, submit it
+            if (isValid) {
+                store(getData());
+            }
+        }
+
+        // Store Bang
+        function store(data) {
+            bang_insert(data)
+
+            // Redirect back
+            window.location.href = "/quicksearch-public/index.html";
+        }
+
+        // Get Data
+        function getData() {
+            const bang = document.getElementById("bang").value;
+            const bangDomain = document.getElementById("bang-domain").value;
+            const bangUrl = document.getElementById("bang-url").value;
+            const bangCategory = document.getElementById("bang-category").value;
+            const bangDescription = document.getElementById("bang-description").value;
+            const bangSc = document.getElementById("bang-sc").value;
+
+            return {
+                c: bangCategory, // Category
+                d: bangDomain, // Domain
+                r: 0, // Assuming 'r' is always 0 based on your example
+                s: bangDescription, // Description
+                sc: bangSc, // Short cut
+                t: bang, // Tag
+                u: bangUrl, // Url
+            };
+        }
+
+    </script>
+    <script>
+        const explain = `<p class="custom-paragraph">The form in the add.html file is designed to collect details for adding a
+                "Custom Bang,"
+                which is
+                essentially a shortcut
+                for a search query. Here's what each field expects:</p>
+
+            <p class="custom-paragraph"><strong>Bang Tag</strong> Name (id="bang (e.g: bang)"): The name of the custom
+                bang (e.g., "bang").
+            </p>
+
+            <p class="custom-paragraph"><strong>Bang Domain</strong> (id="bang-domain"): The domain of the search engine
+                or website
+                (e.g.,
+                "duckduckgo.com").</p>
+
+            <p class="custom-paragraph"><strong>URL</strong> (id="bang-domain"): The URL template for the search query.
+                The placeholder
+                {{{s}}}
+                should be used to
+                indicate where
+                the search keyword will be inserted (e.g., https://duckduckgo.com/bangs?q={{{s}}}).</p>
+
+            <p class="custom-paragraph"><strong>Bang Category</strong> (id="bang-category"): An optional category for
+                the bang (e.g.,
+                "General").</p>
+
+            <p class="custom-paragraph"><strong>Description</strong> (id="bang-description"): An optional description of
+                the bang (e.g.,
+                "Search the
+                bang
+                shortcuts").</p>
+
+            <p class="custom-paragraph"><strong>Keyword</strong> (id="bang-sc"): An optional keyword or shortcut for the
+                bang (e.g.,
+                "ChatGPT").</p>`
+
+        const toggle_explanation = () => {
+            element = document.getElementById("explain");
+            button = document.getElementById("toggle");
+            if (element.innerHTML !== explain) {
+                element.innerHTML = explain;
+                button.innerHTML = "Show less";
+            } else {
+                element.innerHTML = "";
+                button.innerHTML = "Show full explanation";
+            }
+        }
+    </script>
+</body>
+
+</html>

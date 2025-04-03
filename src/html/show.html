@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom Bangs</title>
+    <base href="https://xxtrixxsnens.github.io/quicksearch-public/">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Define your light and dark mode variables */
+        :root {
+            --bg-color: #f9fafb;
+            /* Light mode background */
+            --text-color: #374151;
+            /* Light mode text */
+            --card-bg: #fff;
+            /* Light mode card background */
+            --input-border: #e5e7eb;
+            /* Light mode input border */
+            --input-focus-border: #3b82f6;
+            /* Light mode input focus border */
+            --link-color: #3b82f6;
+            /* Light mode link color */
+            --link-hover: #2563eb;
+            /* Light mode link hover color */
+            --message-bg-success: #f0fdf4;
+            --message-text-success: #15803d;
+            --message-border-success: #16a34a;
+            --message-bg-error: #fee2e2;
+            --message-text-error: #b91c1c;
+            --message-border-error: #dc2626;
+            --edit-button-bg: #fef08a;
+            --edit-button-text: #6b7280;
+            --edit-button-hover-bg: #fde047;
+            --delete-button-bg: #dc2626;
+            --delete-button-text: #fff;
+            --delete-button-hover-bg: #b91c1c;
+            --bang-item-border: #e5e7eb;
+            --bang-item-hover-border: #93c5fd;
+            --bang-item-title: #2563eb;
+            --no-bangs-text: #9ca3af;
+        }
+
+        .dark-mode {
+            --bg-color: #111827;
+            /* Dark mode background */
+            --text-color: #d1d5db;
+            /* Dark mode text */
+            --card-bg: #1f2937;
+            /* Dark mode card background */
+            --input-border: #374151;
+            /* Dark mode input border */
+            --input-focus-border: #93c5fd;
+            /* Dark mode input focus border */
+            --link-color: #93c5fd;
+            /* Dark mode link color */
+            --link-hover: #60a5fa;
+            /* Dark mode link hover color */
+            --message-bg-success: #1e293b;
+            --message-text-success: #a7f3d0;
+            --message-border-success: #6ee7b7;
+            --message-bg-error: #374151;
+            --message-text-error: #fca5a5;
+            --message-border-error: #f87171;
+            --edit-button-bg: #374151;
+            --edit-button-text: #fef08a;
+            --edit-button-hover-bg: #4b5563;
+            --delete-button-bg: #7f1d1d;
+            --delete-button-text: #fee2e2;
+            --delete-button-hover-bg: #450a0a;
+            --bang-item-border: #4b5563;
+            --bang-item-hover-border: #60a5fa;
+            --bang-item-title: #60a5fa;
+            --no-bangs-text: #6b7280;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Inter', sans-serif;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        /* Custom styles for the message box */
+        #message-box {
+            display: none;
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 16px;
+            border-radius: 6px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            z-index: 10;
+        }
+
+        #message-box.show {
+            display: block;
+        }
+
+        #message-box.bg-green-100 {
+            background-color: var(--message-bg-success);
+            color: var(--message-text-success);
+            border: 1px solid var(--message-border-success);
+        }
+
+        #message-box.bg-red-100 {
+            background-color: var(--message-bg-error);
+            color: var(--message-text-error);
+            border: 1px solid var(--message-border-error);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .heading {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--link-color);
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        #search-container {
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        #search-input {
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--input-border);
+            border-radius: 0.375rem;
+            width: 80%;
+            max-width: 400px;
+            font-size: 1rem;
+            transition: border-color 0.2s ease-in-out;
+            background-color: var(--card-bg);
+            color: var(--text-color);
+        }
+
+        #search-input:focus {
+            outline: none;
+            border-color: var(--input-focus-border);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        #bang-list {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+        }
+
+        @media (min-width: 640px) {
+            #bang-list {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (min-width: 1024px) {
+            #bang-list {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        .bang-item {
+            background-color: var(--card-bg);
+            border-radius: 0.5rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            border: 1px solid var(--bang-item-border);
+            transition: transform 0.2s ease-in-out, border-color 0.2s ease-in-out;
+        }
+
+        .bang-item:hover {
+            transform: scale(1.03);
+            border-color: var(--bang-item-hover-border);
+        }
+
+        .bang-item h2 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--bang-item-title);
+            margin-bottom: 0.5rem;
+        }
+
+        .bang-item p {
+            color: var(--text-color);
+            margin-bottom: 0.25rem;
+        }
+
+        .bang-item a {
+            color: var(--link-color);
+            text-decoration: underline;
+        }
+
+        .bang-item a:hover {
+            color: var(--link-hover);
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .edit-button {
+            background-color: var(--edit-button-bg);
+            color: var(--edit-button-text);
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 0.375rem;
+            transition: background-color 0.2s ease-in-out;
+        }
+
+        .edit-button:hover {
+            background-color: var(--edit-button-hover-bg);
+        }
+
+        .delete-button {
+            background-color: var(--delete-button-bg);
+            color: var(--delete-button-text);
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 0.375rem;
+            transition: background-color 0.2s ease-in-out;
+        }
+
+        .delete-button:hover {
+            background-color: var(--delete-button-hover-bg);
+        }
+
+        .no-bangs {
+            text-align: center;
+            color: var(--no-bangs-text);
+            padding-top: 2rem;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-100 font-inter antialiased">
+    <div class="container">
+        <h1 class="heading">
+            Custom Bangs
+        </h1>
+
+        <div id="message-box" class="hidden"></div>
+        <div id="search-container">
+            <input type="text" id="search-input" placeholder="Search bangs...">
+        </div>
+        <div id="bang-list">
+        </div>
+    </div>
+    <script>
+        const body = document.body;
+        const bool = localStorage.getItem('darkMode') === 'enabled';
+        if (bool) {
+            body.classList.add('dark-mode');
+        }
+    </script>
+
+    <script type="module">
+        import { bang_delete, custom_bangs } from '/quicksearch-public/src/js/store.js';
+
+        // Function to display a message
+        function showMessage(message, type = 'success') {
+            const messageBox = document.getElementById('message-box');
+            messageBox.textContent = message;
+            messageBox.className = `fixed top-4 left-1/2 transform -translate-x-1/2 bg-${type === 'success' ? 'green' : 'red'}-100 text-${type === 'success' ? 'green' : 'red'}-700 border border-${type === 'success' ? 'green' : 'red'}-400 px-4 py-2 rounded shadow-md`;
+            messageBox.classList.add('show');
+            setTimeout(() => {
+                messageBox.classList.remove('show');
+            }, 3000); // Hide after 3 seconds
+        }
+
+        function renderBangs(searchTerm = '') {
+            const bangs = custom_bangs(); // Get bangs from localStorage
+            const bangList = document.getElementById('bang-list');
+            bangList.innerHTML = ''; // Clear previous content
+
+            const filteredBangs = bangs.filter(bang => {
+                const searchLower = searchTerm.toLowerCase();
+                return (
+                    bang.c.toLowerCase().includes(searchLower) ||
+                    bang.d.toLowerCase().includes(searchLower) ||
+                    bang.s.toLowerCase().includes(searchLower) ||
+                    bang.sc.toLowerCase().includes(searchLower) ||
+                    bang.t.toLowerCase().includes(searchLower) ||
+                    bang.u.toLowerCase().includes(searchLower)
+                );
+            });
+
+            if (!filteredBangs || filteredBangs.length === 0) {
+                bangList.innerHTML = `<div class="no-bangs">No matching bangs found.</div>`;
+                return;
+            }
+
+            filteredBangs.forEach(bang => {
+                const bangItem = document.createElement('div');
+                bangItem.className = 'bang-item';
+
+                bangItem.innerHTML = `
+                    <h2>${bang.t}</h2>
+                    <p><span class="font-medium">Category:</span> ${bang.c}</p>
+                    <p><span class="font-medium">Description:</span> ${bang.d}</p>
+                    <p><span class="font-medium" hidden>Rank:</span> ${bang.r}</p>
+                    <p><span class="font-medium">Description:</span> ${bang.s}</p>
+                    <p><span class="font-medium">Keyword:</span> ${bang.sc}</p>
+                    <p><span class="font-medium">Bang:</span> ${bang.t}</p>
+                    <p>
+                        <span class="font-medium">URL:</span>
+                        <a href="${bang.u}" target="_blank" rel="noopener noreferrer">
+                            ${bang.u}
+                        </a>
+                    </p>
+                    <div class="button-container">
+                        <button
+                            class="edit-button"
+                            data-c="${bang.c}"
+                            data-d="${bang.d}"
+                            data-r="${bang.r}"
+                            data-s="${bang.s}"
+                            data-sc="${bang.sc}"
+                            data-t="${bang.t}"
+                            data-u="${bang.u}"
+                        >
+                            Edit
+                        </button>
+                        <button
+                            class="delete-button"
+                            data-c="${bang.c}"
+                            data-d="${bang.d}"
+                            data-r="${bang.r}"
+                            data-s="${bang.s}"
+                            data-sc="${bang.sc}"
+                            data-t="${bang.t}"
+                            data-u="${bang.u}"
+                        >
+                            Delete
+                        </button>
+                    </div>
+                `;
+
+                const deleteButton = bangItem.querySelector('.delete-button');
+                deleteButton.addEventListener('click', (event) => {
+                    const bangToDelete = {
+                        c: event.target.dataset.c,
+                        d: event.target.dataset.d,
+                        r: 0,
+                        s: event.target.dataset.s,
+                        sc: event.target.dataset.sc,
+                        t: event.target.dataset.t,
+                        u: event.target.dataset.u,
+                    };
+
+                    if (confirm(`Are you sure you want to delete bang "${bangToDelete.t}"?`)) {
+                        if (bang_delete(bangToDelete)) { // Pass the whole object for deletion
+                            renderBangs(); // Re-render the list after deletion
+                            showMessage(`Bang "${bangToDelete.t}" deleted successfully.`, 'success');
+                        } else {
+                            showMessage(`Failed to delete bang "${bangToDelete.t}".`, 'error');
+                        }
+                    }
+                });
+
+                const editButton = bangItem.querySelector('.edit-button');
+                editButton.addEventListener('click', (event) => {
+                    const bangToEdit = {
+                        c: event.target.dataset.c,
+                        d: event.target.dataset.d,
+                        r: 0,
+                        s: event.target.dataset.s,
+                        sc: event.target.dataset.sc,
+                        t: event.target.dataset.t,
+                        u: event.target.dataset.u,
+                    };
+
+                    localStorage.setItem('to_mod', JSON.stringify(bangToEdit));
+                    window.location.href = '/quicksearch-public/src/html/edit.html'
+
+                });
+
+                bangList.appendChild(bangItem);
+            });
+        }
+
+        // Initial rendering of bangs
+        renderBangs();
+
+        // Function to get query parameter
+        function getQueryParameter(name) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(name);
+        }
+
+        // Initial rendering of bangs
+        const searchTerm = getQueryParameter('q') ?? '';
+        renderBangs(searchTerm);
+
+        // Search functionality (optional, for the input field)
+        const searchInput = document.getElementById('search-input');
+        if (searchInput) {  // Check if the input field exists
+            searchInput.addEventListener('input', (event) => {
+                const searchTerm = event.target.value;
+                renderBangs(searchTerm);
+            });
+        }
+    </script>
+</body>
+
+</html>

@@ -4,17 +4,51 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Cache-Control" content="max-age=31536000, immutable">
   <title>QuickSearch</title>
   <meta name="description" content="A better default search engine (with bangs!)" />
-  <link rel="stylesheet" href="./src/global.css" />
-  <link rel="search" type="application/opensearchdescription+xml" title="Quick Search" href="/opensearch.xml">
+  <link rel="icon" type="image/svg+xml"
+    href="https://raw.githubusercontent.com/xxtrixxsnens/quicksearch-public/refs/heads/main/public/favicon.svg">
+  <link rel="stylesheet" href="src/css/global.css" />
+  <link rel="search" type="application/opensearchdescription+xml" title="Quick Search"
+    href="https://raw.githubusercontent.com/xxtrixxsnens/quicksearch-public/refs/heads/main/opensearch.xml">
+  <base href="https://xxtrixxsnens.github.io/quicksearch-public/">
 </head>
 
-<body style="background-color: transparent">
+<body>
+  <script>
+    const body = document.body;
+    const bool = localStorage.getItem('darkMode') === 'enabled';
+    if (bool) {
+      body.classList.add('dark-mode');
+    }
+  </script>
+  <button id="darkModeToggle">Toggle Dark Mode</button>
   <div id="app"></div>
-  <script type="text/javascript" src="./src/bang.js"></script>
-  <script type="text/javascript" src="./src/custom_bang.js"></script>
-  <script type="text/javascript" src="./src/main.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const darkModeToggle = document.getElementById('darkModeToggle');
+      const body = document.body;
+
+      // Check for saved dark mode preference
+      const isDarkMode = localStorage.getItem('darkMode') === 'enabled';
+      if (isDarkMode) {
+        body.classList.add('dark-mode');
+      }
+
+      // Toggle dark mode on button click
+      darkModeToggle.addEventListener('click', () => {
+        body.classList.toggle('dark-mode');
+
+        // Save dark mode preference to localStorage
+        if (body.classList.contains('dark-mode')) {
+          localStorage.setItem('darkMode', 'enabled');
+        } else {
+          localStorage.setItem('darkMode', 'disabled');
+        }
+      });
+    });</script>
+  <script type="module" src="src/js/main.js"></script>
 </body>
 
 </html>
