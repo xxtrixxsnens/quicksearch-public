@@ -213,12 +213,16 @@
 
             <button id="toggle" onclick="toggle_explanation()">Show full explanation</button>
 
-            <form style="margin-top: 5%;" id="custom-bang-form">
+            <form style="margin-top: 5%;" id="custom-bang-form" onsubmit="validateForm(event)" novalidate>
+
+                <div class="error-message" id="bang-error" hidden="true"></div>
                 <input class="input-required" type="text" id="bang" placeholder="Bang Tag" required />
 
+                <div class="error-message" id="bang-domain-error" hidden="true"></div>
                 <input class="input-required" type="text" id="bang-domain"
                     placeholder="Bang Domain (e.g: duckduckgo.com)" required />
 
+                <div class="error-message" id="bang-url-error" hidden="true"></div>
                 <input class="input-required" type="url" id="bang-url"
                     placeholder="URL (e.g: https://duckduckgo.com/bangs?q={{{s}}})" required />
 
@@ -236,7 +240,7 @@
     </div>`
     </script>
     <script type="module">
-        import { bang_insert } from '/quicksearch-public/src/js/store.js';
+        import { bang_insert } from 'src/js/store.js';
 
         document.getElementById('custom-bang-form').addEventListener('submit', processForm);
 

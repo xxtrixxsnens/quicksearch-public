@@ -31,10 +31,10 @@ function noSearchDefaultPageRender() {
         <img src="./public/plus.svg" alt="Add" class="icon">
     </button>
     <button id="show-button" class="button show-button">
-        <img src="./public/list.svg" alt="Show" class="icon">
+        <img src="./public/edit.svg" alt="Show" class="icon">
     </button>
     <button id="default-button" class="button default-button">
-        <img src="./public/tag.svg" alt="Default" class="icon">
+        <img src="./public/settings.svg" alt="Default" class="icon">
     </button>
     <button id="upload-button" class="button upload-button">
         <img src="./public/upload.svg" alt="Upload" class="icon">

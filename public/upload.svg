@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   version="1.1"
+   viewBox="0 0 215 205"
+   width="215"
+   height="205"
+   id="svg11"
+   sodipodi:docname="upload.svg"
+   inkscape:version="1.4.1-rc (06eac75fbf, 2025-03-29)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview11"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="2.497561"
+     inkscape:cx="107.50488"
+     inkscape:cy="102.2998"
+     inkscape:window-width="1920"
+     inkscape:window-height="973"
+     inkscape:window-x="0"
+     inkscape:window-y="32"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg11" />
+  <!-- svg-source:excalidraw -->
+  <metadata
+     id="metadata1" />
+  <defs
+     id="defs1">
+    <style
+       class="style-fonts"
+       id="style1" />
+  </defs>
+  <g
+     stroke-linecap="round"
+     transform="matrix(1,0,0,-1,10,194.67311)"
+     id="g1">
+    <path
+       d="m 130.35,5.3 c 11.64,2.39 24.53,10.34 33.82,18.51 9.29,8.17 16.85,19.61 21.93,30.51 5.08,10.91 8.22,23.21 8.55,34.92 0.33,11.71 -2.3,24.41 -6.59,35.35 -4.29,10.94 -10.7,21.55 -19.15,30.3 -8.44,8.74 -20.24,17.11 -31.53,22.19 -11.28,5.08 -24,8 -36.16,8.27 -12.17,0.27 -25.08,-2.62 -36.83,-6.64 C 52.63,174.69 40.05,169.18 30.68,161.26 21.32,153.34 13.14,141.99 8.2,131.18 3.26,120.37 1.38,108.1 1.04,96.39 0.7,84.68 2.06,71.95 6.15,60.93 10.25,49.91 17.28,39.17 25.59,30.28 33.9,21.4 44.68,12.81 56,7.62 67.33,2.44 79.84,-0.76 93.53,-0.81 c 13.68,-0.06 36.4,5.94 44.58,8.11 8.18,2.17 5.15,3.42 4.51,4.92 M 110.33,1.5 c 12.09,-0.15 24.33,4.34 35.12,10.1 10.8,5.77 21.77,15.44 29.67,24.51 7.89,9.08 14.49,18.72 17.72,29.94 3.23,11.22 3.49,25.54 1.65,37.38 -1.85,11.84 -6.64,23.38 -12.71,33.67 -6.08,10.29 -14.29,20.43 -23.75,28.08 -9.47,7.64 -21.19,14.62 -33.03,17.8 -11.85,3.18 -25.55,3 -38.03,1.28 C 74.48,182.54 61.23,178.3 50.1,172.67 38.96,167.04 27.7,159.69 20.17,150.47 12.64,141.25 8.29,128.68 4.92,117.37 1.56,106.05 -1.3,94.11 -0.02,82.57 1.27,71.04 6.57,58.45 12.64,48.17 18.7,37.89 26.43,28.19 36.39,20.9 46.35,13.62 60.51,8.03 72.38,4.47 c 11.86,-3.57 29.04,-4.55 35.2,-4.97 6.17,-0.41 1.76,0.73 1.79,2.48"
+       stroke="#1e1e1e"
+       stroke-width="2"
+       fill="none"
+       id="path1" />
+  </g>
+  <g
+     stroke-linecap="round"
+     id="g5"
+     transform="matrix(1,0,0,-1,0,204.67311)">
+    <g
+       transform="translate(102.29649,23.12769)"
+       id="g2">
+      <path
+         d="m 0.78,-0.08 c 0.68,21.9 3.61,110.36 4.17,132.63 M -0.27,-1.16 C 0.2,21.41 3.56,111.76 4.12,133.87"
+         stroke="#1e1e1e"
+         stroke-width="2"
+         fill="none"
+         id="path2" />
+    </g>
+    <g
+       transform="translate(102.29649,23.12769)"
+       id="g3">
+      <path
+         d="m -5.18,110.66 c 3.56,8.94 6.45,16.22 9.3,23.21 m -9.3,-23.21 c 2.98,8.78 6.82,16.84 9.3,23.21"
+         stroke="#1e1e1e"
+         stroke-width="2"
+         fill="none"
+         id="path3" />
+    </g>
+    <g
+       transform="translate(102.29649,23.12769)"
+       id="g4">
+      <path
+         d="m 11.92,110.12 c -2.8,9.25 -6.26,16.73 -7.8,23.75 m 7.8,-23.75 c -2.99,8.95 -5.13,17.19 -7.8,23.75"
+         stroke="#1e1e1e"
+         stroke-width="2"
+         fill="none"
+         id="path4" />
+    </g>
+  </g>
+  <mask
+     id="mask5" />
+  <g
+     stroke-linecap="round"
+     id="g7"
+     transform="matrix(1,0,0,-1,0,204.67311)">
+    <g
+       transform="translate(105.25115,156.67809)"
+       id="g6">
+      <path
+         d="m 0.8,0.3 c -3.97,-10.58 -19.79,-52.98 -23.89,-63.44 m 22.84,62.55 c -4.19,-10.45 -20.3,-51.2 -23.8,-61.27"
+         stroke="#1e1e1e"
+         stroke-width="2"
+         fill="none"
+         id="path5" />
+    </g>
+  </g>
+  <mask
+     id="mask7" />
+  <g
+     stroke-linecap="round"
+     id="g9"
+     transform="matrix(1,0,0,-1,0,204.67311)">
+    <g
+       transform="translate(107.42591,156.18633)"
+       id="g8">
+      <path
+         d="M 0.01,-0.76 C 3.52,-10.95 17.29,-51.47 20.83,-61.51 M -1.45,1.46 C 1.89,-8.56 16,-50.11 19.65,-60.31"
+         stroke="#1e1e1e"
+         stroke-width="2"
+         fill="none"
+         id="path7" />
+    </g>
+  </g>
+  <mask
+     id="mask9" />
+  <g
+     stroke-linecap="round"
+     id="g11"
+     transform="matrix(1,0,0,-1,0,204.67311)">
+    <g
+       transform="translate(55.899385,165.32912)"
+       id="g10">
+      <path
+         d="M 1.12,0.44 C 17.61,0.03 82.44,-2.55 99.08,-3.04 M 0.24,-0.37 c 16.87,-0.15 84.37,-0.39 101.13,-1.07"
+         stroke="#1e1e1e"
+         stroke-width="2"
+         fill="none"
+         id="path9" />
+    </g>
+  </g>
+  <mask
+     id="mask11" />
+</svg>
