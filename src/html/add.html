@@ -240,7 +240,7 @@
     </div>`
     </script>
     <script type="module">
-        import { bang_insert } from 'src/js/store.js';
+        import { bang_insert } from '/quicksearch-public/src/js/store.js';
 
         document.getElementById('custom-bang-form').addEventListener('submit', processForm);
 
@@ -293,7 +293,7 @@
             bang_insert(data)
 
             // Redirect back
-            window.location.href = "/quicksearch-public/index.html";
+            window.location.href = "index.html";
         }
 
         // Get Data
